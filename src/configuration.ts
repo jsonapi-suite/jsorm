@@ -17,6 +17,8 @@ export default class Config {
   static logger: Logger = new Logger();
   static jwtLocalStorage: string | false = 'jwt';
   static localStorage;
+  static beforeFetch: Array<Function> = []
+  static afterFetch: Array<Function> = []
 
   static setup(options? : Object) : void {
     if (!options) options = {};

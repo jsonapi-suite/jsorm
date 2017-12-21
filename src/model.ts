@@ -88,6 +88,18 @@ export default class Model {
     return options
   }
 
+  static beforeFetch(url: RequestInfo, options: RequestInit) : void {
+    Config.beforeFetch.forEach((fn) => {
+      fn(url, options)
+    })
+  }
+
+  static afterFetch(response: Response, json: JSON) : void {
+    Config.afterFetch.forEach((fn) => {
+      fn(response, json)
+    })
+  }
+
   static getJWTOwner() : typeof Model {
     if (this.isJWTOwner) {
       return this;
@@ -215,7 +227,7 @@ export default class Model {
       if (this.klass.camelizeKeys) {
         attributeName = camelize(key);
       }
-      
+
       if (key == 'id' || this.klass.attributeList[attributeName]) {
         this[attributeName] = attrs[key];
       }
@@ -281,7 +293,7 @@ export default class Model {
   destroy() : Promise<any> {
     let url     = this.klass.url(this.id);
     let verb    = 'delete';
-    let request = new Request();
+    let request = new Request(this.klass);
 
     let requestPromise = request.delete(url, this._fetchOptions());
     return this._writeRequest(requestPromise, () => {
@@ -292,7 +304,7 @@ export default class Model {
   save(options: Object = {}) : Promise<any> {
     let url     = this.klass.url();
     let verb    = 'post';
-    let request = new Request();
+    let request = new Request(this.klass);
     let payload = new WritePayload(this, options['with']);
 
     if (this.isPersisted()) {
@@ -304,7 +316,6 @@ export default class Model {
     let requestPromise = request[verb](url, json, this._fetchOptions());
     return this._writeRequest(requestPromise, (response) => {
       this.fromJsonapi(response['jsonPayload'].data, response['jsonPayload'], payload.includeDirective);
-      //this.isPersisted(true);
       payload.postProcess();
     });
   }
@@ -320,10 +331,9 @@ export default class Model {
 
   private _writeRequest(requestPromise : Promise<any>, callback: Function) : Promise<any> {
     return new Promise((resolve, reject) => {
-      requestPromise.catch((e) => { throw(e) });
       return requestPromise.then((response) => {
         this._handleResponse(response, resolve, reject, callback);
-      });
+      }).catch(reject)
     });
   }
 
@@ -333,8 +343,6 @@ export default class Model {
     if (response.status == 422) {
       ValidationErrors.apply(this, response['jsonPayload']);
       resolve(false);
-    } else if (response.status >= 500) {
-      reject('Server Error');
     } else {
       callback(response);
       resolve(true);

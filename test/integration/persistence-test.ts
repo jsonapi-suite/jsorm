@@ -188,7 +188,7 @@ describe('Model persistence', function() {
 
         it('rejects the promise', function(done) {
           instance.save().catch((err) => {
-            expect(err).to.eq('Server Error');
+            expect(err.message).to.eq('Server Error');
             done();
           });
         });
@@ -304,7 +304,7 @@ describe('Model persistence', function() {
 
       it('rejects the promise', function() {
         instance.destroy().catch((err) => {
-          expect(err).to.eq('Server Error');
+          expect(err.message).to.eq('Server Error');
         });
       });
     });

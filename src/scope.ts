@@ -29,7 +29,7 @@ export default class Scope {
     return this._fetch(this.model.url()).then((json : japiDoc) => {
       let collection = new CollectionProxy<Model>(json);
       return collection;
-    });
+    })
   }
 
   find(id : string | number) : Promise<RecordProxy<Model>> {
@@ -215,16 +215,16 @@ export default class Scope {
   }
 
   private _fetch(url : string) : Promise<Object> {
-    let qp = this.toQueryParams();
+    let qp = this.toQueryParams()
     if (qp) {
-      url = `${url}?${qp}`;
+      url = `${url}?${qp}`
     }
-    let request = new Request();
+    let request = new Request(this.model)
     let fetchOpts = this.model.fetchOptions()
-
-    return request.get(url, fetchOpts).then((response) => {
-      refreshJWT(this.model, response);
-      return response['jsonPayload'];
-    });
+    let promise = request.get(url, fetchOpts)
+    return promise.then((response) => {
+      refreshJWT(this.model, response)
+      return response['jsonPayload']
+    })
   }
 }
