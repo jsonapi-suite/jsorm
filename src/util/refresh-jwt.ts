@@ -3,8 +3,9 @@ import Config from '../configuration';
 
 export default function refreshJWT(klass: typeof Model, serverResponse: Response) : void {
   let jwt = serverResponse.headers.get('X-JWT');
-  let localStorage = Config.localStorage;
+  if (!jwt) return
 
+  let localStorage = Config.localStorage;
   if (localStorage) {
     let localStorageKey = Config.jwtLocalStorage;
     if (localStorageKey) {
