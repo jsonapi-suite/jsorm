@@ -63,6 +63,10 @@ export default class Model {
 
   static setJWT(token: string) : void {
     this.getJWTOwner().jwt = token;
+
+    if (Config.jwtLocalStorage) {
+      Config.localStorage.setItem(Config.jwtLocalStorage, token)
+    }
   }
 
   static getJWT() : string {
