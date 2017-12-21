@@ -106,6 +106,7 @@ const configSetup = function(opts = {}) {
 configSetup();
 
 export {
+  Config,
   configSetup,
   ApplicationRecord,
   TestJWTSubclass,
