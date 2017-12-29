@@ -3,7 +3,7 @@
 // Allows 'inherited' hook
 
 let globalObj;
-if (typeof window === 'undefined') {
+if (typeof window === 'undefined' || window != (global as any)) {
   globalObj = global;
 } else {
   globalObj = window;
