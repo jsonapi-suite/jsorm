@@ -1,6 +1,6 @@
 import { sinon, expect, fetchMock } from '../test-helper';
 import { Config } from '../../src/index';
-import { configSetup, ApplicationRecord, Author } from '../fixtures';
+import { configSetup, ApplicationRecord, Author, Person } from '../fixtures';
 
 after(function () {
   fetchMock.restore();
@@ -24,6 +24,30 @@ describe('authorization headers', function() {
         return true;
       }, 200);
       Author.find(1);
+    });
+  });
+
+  describe('when header is set in a custom generateAuthHeader', function() {
+    let originalHeaderFn = Person.generateAuthHeader;
+    beforeEach(function() {
+      ApplicationRecord.jwt = 'cu570m70k3n';
+      Person.generateAuthHeader = function(token) {
+        return `Bearer ${token}`;
+      };
+    });
+
+    afterEach(function() {
+      fetchMock.restore();
+      Person.generateAuthHeader = originalHeaderFn;
+    });
+
+    it("sends the custom Authorization token in the request's headers", function(done) {
+      fetchMock.mock((url, opts) => {
+        expect(opts.headers.Authorization).to.eq('Bearer cu570m70k3n');
+        done();
+        return true;
+      }, 200);
+      Person.find(1);
     });
   });
 
