@@ -194,7 +194,7 @@ describe('fetch middleware', function() {
         .catch((e) => {
           expect(e.response.statusText).to.eq('Internal Server Error')
           expect(e.originalError.message)
-            .to.eq('Unexpected end of JSON input')
+            .to.contain('Unexpected end of JSON input')
         })
       })
     })
@@ -325,7 +325,7 @@ describe('fetch middleware', function() {
         .catch((e) => {
           expect(e.response.statusText).to.eq('Internal Server Error')
           expect(e.originalError.message)
-            .to.eq('Unexpected end of JSON input')
+            .to.contain('Unexpected end of JSON input')
         })
       })
     })

@@ -133,7 +133,7 @@ describe('Model', function() {
       expect(ApplicationRecord.jwt).to.eq('n3wt0k3n');
     });
 
-    describe.only('when localStorage is configured', function() {
+    describe('when localStorage is configured', function() {
       beforeEach(function() {
         Config.jwtLocalStorage = 'jwt'
         Config.localStorage = { setItem: sinon.spy() }
