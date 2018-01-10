@@ -2,6 +2,7 @@ import Model from '../model';
 import IncludeDirective from './include-directive';
 import * as _snakeCase from './snakecase';
 import tempId from './temp-id';
+import { decamelize } from './string';
 let snakeCase: any = (<any>_snakeCase).default || _snakeCase;
 snakeCase = snakeCase['default'] || snakeCase;
 
@@ -87,7 +88,7 @@ export default class WritePayload {
         }
 
         if (data) {
-          _relationships[key] = { data }
+          _relationships[decamelize(key)] = { data }
         }
       }
     });
