@@ -47,8 +47,8 @@ export default class Request {
     return this._fetchWithLogging(url, options);
   }
 
-  put(url: string, payload: Object, options: RequestInit) : Promise<any> {
-    options.method = 'PUT';
+  patch(url: string, payload: Object, options: RequestInit) : Promise<any> {
+    options.method = 'PATCH';
     options.body   = JSON.stringify(payload);
 
     return this._fetchWithLogging(url, options);

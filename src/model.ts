@@ -317,7 +317,7 @@ export default class Model {
 
     if (this.isPersisted()) {
       url  = this.klass.url(this.id);
-      verb = 'put';
+      verb = 'patch';
     }
 
     let json = payload.asJSON();

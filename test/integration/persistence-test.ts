@@ -9,12 +9,12 @@ after(function () {
 
 let instance;
 let payloads;
-let putPayloads;
+let patchPayloads;
 let deletePayloads;
 let serverResponse;
 beforeEach(function() {
   payloads = [];
-  putPayloads = [];
+  patchPayloads = [];
   deletePayloads = [];
   instance = new Person();
   serverResponse = {
@@ -34,8 +34,8 @@ const resetMocks = function() {
     return serverResponse;
   });
 
-  fetchMock.put('http://example.com/api/v1/people/1', function(url, payload) {
-    putPayloads.push(JSON.parse(payload.body));
+  fetchMock.patch('http://example.com/api/v1/people/1', function(url, payload) {
+    patchPayloads.push(JSON.parse(payload.body));
     return serverResponse;
   });
 
@@ -71,7 +71,7 @@ describe('Model persistence', function() {
       it('updates instead of creates', function(done) {
         instance.firstName = 'Joe';
         instance.save().then(() => {
-          expect(putPayloads[0]).to.deep.equal({
+          expect(patchPayloads[0]).to.deep.equal({
             data: {
               id: '1',
               type: 'people',
@@ -101,8 +101,8 @@ describe('Model persistence', function() {
 
         it('does not send attributes to the server', function(done) {
           instance.save().then(() => {
-            console.log(putPayloads[0])
-            expect(putPayloads[0]).to.deep.equal({
+            console.log(patchPayloads[0])
+            expect(patchPayloads[0]).to.deep.equal({
               data: {
                 id: '1',
                 type: 'people'

@@ -6,7 +6,7 @@ let fetchMock = require('fetch-mock');
 
 let instance;
 let payloads;
-let putPayloads;
+let patchPayloads;
 let deletePayloads;
 let serverResponse;
 
@@ -18,8 +18,8 @@ const resetMocks = function() {
     return serverResponse;
   });
 
-  fetchMock.put('http://example.com/api/v1/authors/1', function(url, payload) {
-    putPayloads.push(JSON.parse(payload.body));
+  fetchMock.patch('http://example.com/api/v1/authors/1', function(url, payload) {
+    patchPayloads.push(JSON.parse(payload.body));
     return serverResponse;
   });
 
@@ -151,7 +151,7 @@ const seedPersistedData = function() {
 describe('nested persistence', function() {
   beforeEach(function() {
     payloads = [];
-    putPayloads = [];
+    patchPayloads = [];
     deletePayloads = [];
     instance = new Author({ firstName: 'Stephen' });
     serverResponse = {
@@ -289,7 +289,7 @@ describe('nested persistence', function() {
 
     it('sends the correct payload', function(done) {
       instance.save({ with: { books: 'genre' } }).then((response) => {
-        expect(putPayloads[0]).to.deep.equal(expectedUpdatePayload('update'));
+        expect(patchPayloads[0]).to.deep.equal(expectedUpdatePayload('update'));
         done();
       });
     });
@@ -304,7 +304,7 @@ describe('nested persistence', function() {
       instance.books[0].isMarkedForDestruction(true);
       instance.books[0].genre.isMarkedForDestruction(true);
       instance.save({ with: { books: 'genre' } }).then((response) => {
-        expect(putPayloads[0]).to.deep.equal(expectedUpdatePayload('destroy'));
+        expect(patchPayloads[0]).to.deep.equal(expectedUpdatePayload('destroy'));
         done();
       });
     });
@@ -335,7 +335,7 @@ describe('nested persistence', function() {
       instance.books[0].isMarkedForDisassociation(true);
       instance.books[0].genre.isMarkedForDisassociation(true);
       instance.save({ with: { books: 'genre' } }).then((response) => {
-        expect(putPayloads[0]).to.deep.equal(expectedUpdatePayload('disassociate'));
+        expect(patchPayloads[0]).to.deep.equal(expectedUpdatePayload('disassociate'));
         done();
       });
     });
