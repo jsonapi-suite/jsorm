@@ -116,8 +116,10 @@ describe('fetch middleware', function() {
           expect(before.url).to.eq('http://example.com/api/v1/authors')
           expect(before.options).to.deep.eq({
             headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              "Cache-Control": "no-cache, no-store",
+              "Pragma": "no-cache"
             },
             method: 'GET'
           })
