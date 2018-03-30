@@ -36,8 +36,12 @@ export default class Request {
   }
 
   get(url : string, options: RequestInit) : Promise<any> {
-    options.method = 'GET';
-    return this._fetchWithLogging(url, options);
+    options.method = 'GET'
+    // Temp fix just in this version of jsorm
+    // Certain versions of ie11 will cache the response
+    options.headers['Pragma'] = 'no-cache'
+    options.headers['Cache-Control'] = 'no-cache, no-store'
+    return this._fetchWithLogging(url, options)
   }
 
   post(url: string, payload: Object, options: RequestInit) : Promise<any> {
