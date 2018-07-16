@@ -15,7 +15,7 @@ const patchExtends = function() {
   Object['setPrototypeOf'] = function(subClass, superClass) {
     originalSetPrototypeOf(subClass, superClass);
 
-    if(superClass['inherited']) {
+    if(superClass['inherited'] && superClass['jsormVersion'] == 0) {
       superClass['inherited'](subClass);
     }
   }

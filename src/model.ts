@@ -44,6 +44,7 @@ export default class Model {
   klass: typeof Model;
 
   static attributeList = {};
+  static jsormVersion = 0;
   private static _scope: Scope;
 
   static extend(obj : any) : any {
