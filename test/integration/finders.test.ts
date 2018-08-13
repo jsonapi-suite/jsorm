@@ -332,7 +332,28 @@ describe("Model finders", () => {
         expect(data[0]).to.be.instanceof(Person)
       })
     })
-  })
+
+    describe("when value is has special tokens", () => {
+      beforeEach(() => {
+        fetchMock.reset()
+        fetchMock.get(
+          "http://example.com/api/v1/people?filter[id]=2&filter[a]={{Penn %26 Teller %235%3F}}",
+          {
+            data: [{ id: "2", type: "people" }]
+          }
+        )
+      })
+
+      it("still queries correctly", async () => {
+        const { data } = await Person.where({ id: 2 })
+          .where({ a: "{{Penn & Teller #5?}}" })
+          .all()
+
+        expect(data.length).to.eq(1)
+        expect(data[0]).to.be.instanceof(Person)
+        expect(data[0]).to.have.property("id", "2")
+      })
+    })  })
 
   describe("#stats", () => {
     beforeEach(() => {
