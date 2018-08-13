@@ -1,3 +1,17 @@
+const encodeTokens = ['&', '?', '#']
+const encodeTokensMatch = new RegExp(`[\\${encodeTokens.join('\\')}]`)
+const encodeTokenMapping = encodeTokens.map(token => {
+  return [new RegExp(`\\${token}`, 'g'), encodeURIComponent(token)]
+})
+
+const encodeParameter = (value: string): string => {
+  let newValue: string = `${value}`
+  if (newValue.match(encodeTokensMatch)) {
+    encodeTokenMapping.forEach(mapping => newValue = newValue.replace.apply(newValue, mapping))
+  }
+  return newValue
+}
+
 const parameterize = (obj: any, prefix?: string): string => {
   let str = []
 
@@ -12,12 +26,12 @@ const parameterize = (obj: any, prefix?: string): string => {
 
         if (Array.isArray(value)) {
           if (value.length > 0) {
-            str.push(`${key}=${value.join(",")}`)
+            str.push(`${key}=${value.map(encodeParameter).join(",")}`)
           }
         } else if (typeof value === "object") {
           str.push(parameterize(value, key))
         } else {
-          str.push(`${key}=${value}`)
+          str.push(`${key}=${encodeParameter(value)}`)
         }
       }
     }
