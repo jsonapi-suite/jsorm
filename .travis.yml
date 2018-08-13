@@ -6,6 +6,7 @@ node_js:
 
 before_deploy:
   - npm run build
+  - npm version $TRAVIS_TAG
 
 deploy:
   provider: npm
