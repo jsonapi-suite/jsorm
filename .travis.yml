@@ -5,8 +5,8 @@ node_js:
 - node
 
 before_deploy:
-  - npm run build
-  - npm version $TRAVIS_TAG
+  - yarn version --new-version ${TRAVIS_TAG//v} --no-git-tag-version
+  - yarn run build
 
 deploy:
   provider: npm
