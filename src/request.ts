@@ -109,9 +109,13 @@ export class Request {
 
     let json
     try {
-      json = await response.json()
+      json = await response.clone().json()
     } catch (e) {
-      throw new ResponseError(response, "invalid json", e)
+      if (response.body) {
+        this.logger.debug(`Invalid Response JSON: ${response.text()}`)
+      }
+
+      throw new ResponseError(response, `invalid json: ${json}`, e)
     }
 
     try {

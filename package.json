@@ -34,6 +34,7 @@
     "@types/chai": "^4.0.4",
     "@types/chai-as-promised": "^7.1.0",
     "@types/chai-things": "^0.0.32",
+    "@types/debug": "0.0.30",
     "@types/fetch-mock": "5.12.2",
     "@types/inflected": "1.1.29",
     "@types/lodash": "4.14.92",
@@ -71,6 +72,7 @@
     "winston": "^2.3.1"
   },
   "dependencies": {
+    "debug": "3.1.0",
     "eventbusjs": "0.2.0",
     "inflected": "2.0.3",
     "lodash": "4.17.10",
