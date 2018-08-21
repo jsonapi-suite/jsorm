@@ -60,8 +60,8 @@ export class Request {
     this.logger.debug(colorize("bold", JSON.stringify(responseJSON, null, 4)))
   }
 
-  private _logInvalidJSON(response : Response) : void {
-    this.logger.debug(`Invalid Response JSON: ${response.clone().text()}`)
+  private async _logInvalidJSON(response : Response) {
+    this.logger.debug(`Invalid Response JSON: ${await response.clone().text()}`)
   }
 
   private async _fetchWithLogging(
@@ -115,7 +115,7 @@ export class Request {
     try {
       json = await response.clone().json()
     } catch (e) {
-      this._logInvalidJSON(response)
+      await this._logInvalidJSON(response)
 
       throw new ResponseError(response, `invalid json: ${json}`, e)
     }
@@ -139,7 +139,7 @@ export class Request {
         throw new ResponseError(response, "record not found")
       } else {
         // Bad JSON, for instance an errors payload
-        this._logInvalidJSON(response)
+        await this._logInvalidJSON(response)
         throw new ResponseError(response, "invalid json")
       }
     }
