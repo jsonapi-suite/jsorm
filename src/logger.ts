@@ -1,4 +1,9 @@
 /* tslint:disable:no-console */
+import { IDebugger } from 'debug'
+const debugFactory = require('debug')
+
+export const debug : IDebugger = debugFactory('jsorm')
+
 export enum LogLevel {
   debug = 1,
   info = 2,
@@ -35,6 +40,7 @@ export class Logger implements ILogger {
   }
 
   debug(stmt: any): void {
+    debug(stmt)
     if (this._level <= LogLevel.debug) {
       console.info(stmt)
     }
