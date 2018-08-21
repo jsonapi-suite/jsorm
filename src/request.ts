@@ -1,6 +1,6 @@
 import colorize from "./util/colorize"
 import { MiddlewareStack } from "./middleware-stack"
-import { ILogger, logger as defaultLogger } from "./logger"
+import { ILogger } from "./logger"
 import { JsonapiResponseDoc, JsonapiRequestDoc } from "./jsonapi-spec"
 
 export type RequestVerbs = keyof Request
@@ -60,6 +60,10 @@ export class Request {
     this.logger.debug(colorize("bold", JSON.stringify(responseJSON, null, 4)))
   }
 
+  private _logInvalidJSON(response : Response) : void {
+    this.logger.debug(`Invalid Response JSON: ${response.clone().text()}`)
+  }
+
   private async _fetchWithLogging(
     url: string,
     options: RequestInit
@@ -111,9 +115,7 @@ export class Request {
     try {
       json = await response.clone().json()
     } catch (e) {
-      if (response.body) {
-        this.logger.debug(`Invalid Response JSON: ${response.text()}`)
-      }
+      this._logInvalidJSON(response)
 
       throw new ResponseError(response, `invalid json: ${json}`, e)
     }
@@ -137,6 +139,7 @@ export class Request {
         throw new ResponseError(response, "record not found")
       } else {
         // Bad JSON, for instance an errors payload
+        this._logInvalidJSON(response)
         throw new ResponseError(response, "invalid json")
       }
     }
