@@ -4,6 +4,8 @@ This library provides an interface to APIs following the JSONAPI spec. Though we
 
 Written in [Typescript](https://www.typescriptlang.org) but works in plain old ES5 as well. This library is isomorphic - use it from the browser, or from the server with NodeJS.
 
+![Travis Status](https://travis-ci.org/jsonapi-suite/jsorm.svg?branch=master)
+
 ### Sample Usage
 
 Please see [our documentation page](https://jsonapi-suite.github.io/jsonapi_suite/js/home) for full usage. Below is a Typescript sample:
