@@ -1,8 +1,12 @@
 /* tslint:disable:no-console */
-import { IDebugger } from 'debug'
-const debugFactory = require('debug')
+interface IDebugger {
+  (formatter: any, ...args: any[]): void;
+  enabled: boolean;
+  log: Function;
+  namespace: string;
+}
 
-export const debug : IDebugger = debugFactory('jsorm')
+export const debug : IDebugger = require('debug')('jsorm')
 
 export enum LogLevel {
   debug = 1,
