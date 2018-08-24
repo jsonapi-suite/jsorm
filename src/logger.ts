@@ -1,5 +1,5 @@
 /* tslint:disable:no-console */
-interface IDebugger {
+export interface IDebugger {
   (formatter: any, ...args: any[]): void;
   enabled: boolean;
   log: Function;
