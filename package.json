@@ -72,11 +72,11 @@
     "winston": "^2.3.1"
   },
   "dependencies": {
-    "debug": "3.1.0",
-    "eventbusjs": "0.2.0",
-    "inflected": "2.0.3",
-    "lodash": "4.17.10",
-    "lodash-es": "4.17.4",
-    "tslib": "1.8.1"
+    "debug": "^4.0.0",
+    "eventbusjs": "^0.2.0",
+    "inflected": "^2.0.3",
+    "lodash": "^4.17.10",
+    "lodash-es": "^4.17.4",
+    "tslib": "^1.8.1"
   }
 }
